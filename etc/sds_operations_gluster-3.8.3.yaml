@@ -36,56 +36,383 @@ object_details:
 
     atoms:
         info:
+          run: "atoms.info.run.run(*args, **kwargs)"
           type: "get"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "volume_info"
+          outputs:
+            - "volname"
+            - "type"
+            - "status"
+            - "no_of_bricks"
+            - "transport"
+            - "brickdetails"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
         create:
           run: "gluster_bridge.atoms.volume.create"
           type: "create"
           conditions:
-            pre_condition : ["atoms.<atom_name>.<condition_function>1"...]
-            post_condition: ["atoms.<atom_name>.<condition_function>1"...]
-          name: Meaningful name for this atom, should be something that is distinguishable and understandable for notification, debugging, storing and any other similar purposes
+            pre_condition : None
+            post_condition: None
+          name: "create_volume"
           outputs:
-          - A set, string or list of items that this will be providing (or could provide) to others, used to correlate and associate the thing/s this atom produces, if it produces anything at all.
-
-          global_inputs:
-          - An immutable input_name => value dictionary which specifies any initial inputs that should be automatically injected into the atoms scope before the atom execution commences (this allows for providing atom local values that do not need to be provided by other atoms/dependents).
+            - "volname"
+          global_inputs: None
           local_inputs:
-          - A set or list of required inputs for this atom’s execute method
-          version: An immutable version that associates version information with this atom. It can be useful in resuming older versions of atoms. Standard major, minor versioning concepts should apply
+            - "volname"
+            - ["stripe_count"]
+            - ["replica_count"]
+            - ["transport"]
+            - "brickdetails"
+            - "force"
+          version: "0.1.0"
         delete:
+          run: "atoms.delete.run.run(*args, **kwargs)"
           type: "delete"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "delete_volume"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
         start:
+          run: "atoms.start.run.run(*args, **kwargs)"
           type: "action"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "start_volume"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
         stop:
+          run: "atoms.stop.run.run(*args, *kwargs)"
           type: "action"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "stop_volume"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
         set:
+          run: "atoms.set.run.run(*args, **kwargs)"
           type: "update"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "set_volume_options"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - "option_name"
+            - "option_value"
+          version: "0.1.0"
         get:
           type: "get"
         add_brick:
+          run: "atoms.add_brick.run.run(*args, **kwargs)"
           type: "action"
-        remove-brick:
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "add_brick"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - "brick_name"
+          version: "0.1.0"
+        remove_brick_start:
+          run: "atoms.remove_brick_start.run.run(*args, **kwargs)"
           type: "action"
-        replace-brick:
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "remove_brick_start"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - "brick_name"
+          version: "0.1.0"
+        remove_brick_status:
+          run: "atoms.remove_brick_status.run.run(*args, **kwargs)"
           type: "action"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "remove_brick_status"
+          outputs:
+            - "node"
+            - "rebalanced_files"
+            - "size"
+            - "scanned_files"
+            - "status"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - "brick_name"
+          version: "0.1.0"
+        remove_brick_commit:
+          run: "atoms.remove_brick_commit.run.run(*args, **kwargs)"
+          type: "action"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "remove_brick_commit"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - "brick_name"
+          version: "0.1.0"
+        replace_brick_start:
+          run: "atoms.replace_brick_start.run.run(*args, *8kwargs)"
+          type: "action"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "replace_brick_start"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - "source_brick"
+            - "destination_brick"
+          version: "0.1.0"
+        replace_brick_status:
+          run: "atoms.replace_brick_status.run.run(*args, *8kwargs)"
+          type: "action"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "replace_brick_status"
+          outputs:
+            - "current_file"
+            - "files_migrated"
+            - "status"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - "source_brick"
+            - "destination_brick"
+          version: "0.1.0"
+        replace_brick_pause:
+          run: "atoms.replace_brick_pause.run.run(*args, *8kwargs)"
+          type: "action"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "replace_brick_pause"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - "source_brick"
+            - "destination_brick"
+          version: "0.1.0"
+        replace_brick_abort:
+          run: "atoms.replace_brick_abort.run.run(*args, *8kwargs)"
+          type: "action"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "replace_brick_abort"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - "source_brick"
+            - "destination_brick"
+          version: "0.1.0"
         rebalance_start:
+          run: "atoms.rebalance_start.run.run(*args, **kwargs)"
           type: "action"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "rebalance_start"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - ["fix_layout"]
+            - ["force"]
+          version: "0.1.0"
         rebalance_stop:
+          run: "atoms.rebalance_stop.run.run(*args, **kwargs)"
           type: "action"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "rebalance_stop"
+          outputs:
+            - "node"
+            - "rebalanced_files"
+            - "size"
+            - "scanned_files"
+            - "status"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
         rebalance_status:
+          run: "atoms.rebalance_status.run.run(*args, **kwargs)"
           type: "get"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "rebalance_status"
+          outputs:
+            - "node"
+            - "rebalanced_files"
+            - "size"
+            - "scanned_files"
+            - "status"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
         log:
           type: "update"
         log_locate:
           type: "get"
         log_rotate:
+          run: "atoms.log_rotate.run.run(*args, **kwargs)"
           type: "action"
-        bitrot:
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "log_rotate"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
+        bitrot_enable:
+          run: "atoms.bitrot_enable.run.run(*args, **kwargs)"
           type: "update"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "bitrot_enable"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
+        bitrot_disable:
+          run: "atoms.bitrot_disable.run.run(*args, **kwargs)"
+          type: "update"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "bitrot_disable"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
+        bitrot_scrub_pause:
+          run: "atoms.bitrot_scrub_pause.run.run(*args, **kwargs)"
+          type: "update"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "bitrot_scrub_pause"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
+        bitrot_scrub_resume:
+          run: "atoms.bitrot_scrub_resume.run.run(*args, **kwargs)"
+          type: "update"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "bitrot_scrub_resume"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
+        bitrot_scrub_status:
+          run: "atoms.bitrot_scrub_status.run.run(*args, **kwargs)"
+          type: "get"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "bitrot_scrub_status"
+          outputs:
+            - "volname"
+            - "state"
+            - "impact"
+            - "frequency"
+            - "error_log"
+            - "scrubber_log"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+          version: "0.1.0"
         bitrot_scrub_throttle:
+          run: "atoms.bitrot_scrub_throttle"
           type: "update"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "bitrot_scrub_throttle"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - "rate"
+          version: "0.1.0"
         bitrot_scrub_frequency:
+          run: "atoms.bitrot_scrub_frequency"
           type: "update"
+          conditions:
+            pre_condition: None
+            post_condition: None
+          name: "bitrot_scrub_frequency"
+          outputs:
+            - "success"
+          global_inputs: None
+          local_inputs:
+            - "volname"
+            - "frequency"
+          version: "0.1.0"
         bitrot_scrub:
           type: "update"
   brick:
@@ -142,8 +469,6 @@ object_details:
       deactivate:
         type: "action"
 
-
-
   flows:
     CreateVolume:
       uuid: "1951e821-7aa9-4a91-8183-e73bc8275b8e"
@@ -155,6 +480,3 @@ object_details:
                 post_condition: ["atoms.<atom_name>.<condition_function>1"...]
       run: "gluster_bridge.flows.create_volume"
       type: Create
-
-
-
