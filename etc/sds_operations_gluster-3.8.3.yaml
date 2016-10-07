@@ -36,7 +36,7 @@ object_details:
 
     atoms:
         info:
-          run: "atoms.info.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.get"
           type: "get"
           conditions:
             pre_condition: None
@@ -72,7 +72,7 @@ object_details:
             - "force"
           version: "0.1.0"
         delete:
-          run: "atoms.delete.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.delete"
           type: "delete"
           conditions:
             pre_condition: None
@@ -85,7 +85,7 @@ object_details:
             - "volname"
           version: "0.1.0"
         start:
-          run: "atoms.start.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.start"
           type: "action"
           conditions:
             pre_condition: None
@@ -98,7 +98,7 @@ object_details:
             - "volname"
           version: "0.1.0"
         stop:
-          run: "atoms.stop.run.run(*args, *kwargs)"
+          run: "gluster_bridge.atoms.volume.stop"
           type: "action"
           conditions:
             pre_condition: None
@@ -111,7 +111,7 @@ object_details:
             - "volname"
           version: "0.1.0"
         set:
-          run: "atoms.set.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.set"
           type: "update"
           conditions:
             pre_condition: None
@@ -128,7 +128,7 @@ object_details:
         get:
           type: "get"
         add_brick:
-          run: "atoms.add_brick.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.add_brick"
           type: "action"
           conditions:
             pre_condition: None
@@ -142,7 +142,7 @@ object_details:
             - "brick_name"
           version: "0.1.0"
         remove_brick_start:
-          run: "atoms.remove_brick_start.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.remobe_brick_start"
           type: "action"
           conditions:
             pre_condition: None
@@ -156,7 +156,7 @@ object_details:
             - "brick_name"
           version: "0.1.0"
         remove_brick_status:
-          run: "atoms.remove_brick_status.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.remove_brick_status"
           type: "action"
           conditions:
             pre_condition: None
@@ -174,7 +174,7 @@ object_details:
             - "brick_name"
           version: "0.1.0"
         remove_brick_commit:
-          run: "atoms.remove_brick_commit.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.remove_brick_commit"
           type: "action"
           conditions:
             pre_condition: None
@@ -188,7 +188,7 @@ object_details:
             - "brick_name"
           version: "0.1.0"
         replace_brick_start:
-          run: "atoms.replace_brick_start.run.run(*args, *8kwargs)"
+          run: "gluster_bridge.atoms.volume.replace_brick_start"
           type: "action"
           conditions:
             pre_condition: None
@@ -203,7 +203,7 @@ object_details:
             - "destination_brick"
           version: "0.1.0"
         replace_brick_status:
-          run: "atoms.replace_brick_status.run.run(*args, *8kwargs)"
+          run: "gluster_bridge.atoms.volume.replace_brick_status"
           type: "action"
           conditions:
             pre_condition: None
@@ -220,7 +220,7 @@ object_details:
             - "destination_brick"
           version: "0.1.0"
         replace_brick_pause:
-          run: "atoms.replace_brick_pause.run.run(*args, *8kwargs)"
+          run: "gluster_bridge.atoms.volume.replace_brick_pause"
           type: "action"
           conditions:
             pre_condition: None
@@ -235,7 +235,7 @@ object_details:
             - "destination_brick"
           version: "0.1.0"
         replace_brick_abort:
-          run: "atoms.replace_brick_abort.run.run(*args, *8kwargs)"
+          run: "gluster_bridge.atoms.volume.replace_brick_abort"
           type: "action"
           conditions:
             pre_condition: None
@@ -250,7 +250,7 @@ object_details:
             - "destination_brick"
           version: "0.1.0"
         rebalance_start:
-          run: "atoms.rebalance_start.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.rebalance_start"
           type: "action"
           conditions:
             pre_condition: None
@@ -265,7 +265,7 @@ object_details:
             - ["force"]
           version: "0.1.0"
         rebalance_stop:
-          run: "atoms.rebalance_stop.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.rebalance_stop"
           type: "action"
           conditions:
             pre_condition: None
@@ -282,7 +282,7 @@ object_details:
             - "volname"
           version: "0.1.0"
         rebalance_status:
-          run: "atoms.rebalance_status.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.rebalance_status"
           type: "get"
           conditions:
             pre_condition: None
@@ -303,7 +303,7 @@ object_details:
         log_locate:
           type: "get"
         log_rotate:
-          run: "atoms.log_rotate.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.log_rotate"
           type: "action"
           conditions:
             pre_condition: None
@@ -316,7 +316,7 @@ object_details:
             - "volname"
           version: "0.1.0"
         bitrot_enable:
-          run: "atoms.bitrot_enable.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.bitrot_enable"
           type: "update"
           conditions:
             pre_condition: None
@@ -329,7 +329,7 @@ object_details:
             - "volname"
           version: "0.1.0"
         bitrot_disable:
-          run: "atoms.bitrot_disable.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.bitrot_disable"
           type: "update"
           conditions:
             pre_condition: None
@@ -342,7 +342,7 @@ object_details:
             - "volname"
           version: "0.1.0"
         bitrot_scrub_pause:
-          run: "atoms.bitrot_scrub_pause.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.bitrot_scrub_pause"
           type: "update"
           conditions:
             pre_condition: None
@@ -355,7 +355,7 @@ object_details:
             - "volname"
           version: "0.1.0"
         bitrot_scrub_resume:
-          run: "atoms.bitrot_scrub_resume.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.bitrot_scrub_resume"
           type: "update"
           conditions:
             pre_condition: None
@@ -368,7 +368,7 @@ object_details:
             - "volname"
           version: "0.1.0"
         bitrot_scrub_status:
-          run: "atoms.bitrot_scrub_status.run.run(*args, **kwargs)"
+          run: "gluster_bridge.atoms.volume.bitrot_scrub_status"
           type: "get"
           conditions:
             pre_condition: None
@@ -386,7 +386,7 @@ object_details:
             - "volname"
           version: "0.1.0"
         bitrot_scrub_throttle:
-          run: "atoms.bitrot_scrub_throttle"
+          run: "gluster_bridge.atoms.volume.bitrot_scrub_throttle"
           type: "update"
           conditions:
             pre_condition: None
@@ -400,7 +400,7 @@ object_details:
             - "rate"
           version: "0.1.0"
         bitrot_scrub_frequency:
-          run: "atoms.bitrot_scrub_frequency"
+          run: "gluster_bridge.atoms.volume.bitrot_scrub_frequency"
           type: "update"
           conditions:
             pre_condition: None
