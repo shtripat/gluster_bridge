@@ -11,7 +11,7 @@ class CreateVolume(object):
         self.atom = Create
 
     def start(self):
-        attributes = json.loads(self.api_job['attributes'].decode('utf-8'))
+        attributes = self.api_job['attributes']
         vol_name = attributes['volname']
         brickdetails = attributes['brickdetails']
         self.atom().start(vol_name, brickdetails)
