@@ -6,5 +6,7 @@ class Create(object):
         cmd = ['gluster', 'volume', 'create', name]
         cmd.extend(bricks)
         cmd.append('force')
+        cmd.append('--mode=script')
         subprocess.call(cmd)
-        subprocess.call(['gluster', 'volume', 'start', name])
+        subprocess.call(['gluster', 'volume', 'start',
+                        name, '--mode=script'])
