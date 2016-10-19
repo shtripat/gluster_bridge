@@ -1,15 +1,15 @@
 import json
 
 import etcd
-from tendrl.gluster_bridge.atoms.volume.replace_brick_pause \
-    import ReplaceBrickPause
+from tendrl.gluster_bridge.atoms.volume.replace_brick_commit \
+    import ReplaceBrickCommit
 
 
-class VolumeReplaceBrickPause(object):
+class VolumeReplaceBrickCommit(object):
     def __init__(self, api_job):
-        super(VolumeReplaceBrickPause, self).__init__()
+        super(VolumeReplaceBrickCommit, self).__init__()
         self.api_job = api_job
-        self.atom = ReplaceBrickPause
+        self.atom = ReplaceBrickCommit
 
     def start(self):
         attributes = self.api_job['attributes']

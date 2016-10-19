@@ -1,4 +1,5 @@
 import json
+import socket
 
 import etcd
 from tendrl.gluster_bridge.atoms.peer.detach import Detach
@@ -13,6 +14,9 @@ class PeerDetach(object):
     def start(self):
         attributes = self.api_job['attributes']
         peer = attributes['peer']
+        # If host is trying to detach itself, dont allow
+        if socket.gethostname() == peer:
+            return
         self.atom().start(peer)
         self.api_job['status'] = "finished"
         etcd.Client().write(self.api_job['request_id'],

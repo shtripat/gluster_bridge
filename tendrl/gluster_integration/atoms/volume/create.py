@@ -18,22 +18,22 @@ class Create(object):
         print replica_count
         if stripe_count is not None:
             cmd.append('stripe')
-            cmd.append(stripe_count)
+            cmd.append(str(stripe_count))
         elif replica_count is not None:
             cmd.append('replica')
-            cmd.append(replica_count)
+            cmd.append(str(replica_count))
             if arbiter_count is not None:
                 cmd.append('arbiter')
-                cmd.append(arbiter_count)
+                cmd.append(str(arbiter_count))
         elif disperse_count is not None:
             cmd.append('disperse')
-            cmd.append(disperse_count)
-            if redundancy_count is not None:
-                cmd.append('redundancy')
-                cmd.append(redundancy_count)
-            if disperse_data_count is not None:
-                cmd.append('disperse_data')
-                cmd.append(disperse_data_count)
+            cmd.append(str(disperse_count))
+        elif redundancy_count is not None:
+            cmd.append('redundancy')
+            cmd.append(str(redundancy_count))
+        elif disperse_data_count is not None:
+            cmd.append('disperse-data')
+            cmd.append(str(disperse_data_count))
         if transport:
             cmd.append('transport')
             cmd.append(','.join(transport))

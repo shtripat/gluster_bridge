@@ -1,21 +1,21 @@
 from mock import MagicMock
 import sys
 
-sys.modules['tendrl.gluster_bridge.atoms.volume.replace_brick_start'] = \
+sys.modules['tendrl.gluster_bridge.atoms.volume.replace_brick_commit'] = \
     MagicMock()
 sys.modules['etcd'] = MagicMock()
-from tendrl.gluster_bridge.flows.volume_replace_brick_start \
-    import VolumeReplaceBrickStart
+from tendrl.gluster_bridge.flows.volume_replace_brick_commit \
+    import VolumeReplaceBrickCommit
 
 
-class TestVolumeReplaceBrickStart(object):
+class TestVolumeReplaceBrickCommit(object):
 
     def test_start(object):
-        flow = VolumeReplaceBrickStart(
+        flow = VolumeReplaceBrickCommit(
             {
                 "request_id": "49fa2adde8a6e98591f0f5cb4bc5f44d",
                 "sds_type": "gluster",
-                "flow": "VolumeReplaceBrickStart",
+                "flow": "VolumeReplaceBrickCommit",
                 "object_type": "volume",
                 "status": 'new',
                 "message": 'Starting replace brick for volume',
