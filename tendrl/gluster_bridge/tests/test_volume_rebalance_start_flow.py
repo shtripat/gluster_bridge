@@ -26,7 +26,11 @@ class TestVolumeRebalanceStart(object):
                 "errors": {}
             })
         flow.start()
-        flow.atom().start.assert_called_with('Volume1', True, True)
+        flow.atom().start.assert_called_with(
+            'Volume1',
+            force=True,
+            fix_layout=True
+        )
         assert flow.api_job['status'] == "finished"
 
         flow1 = VolumeRebalanceStart(
@@ -45,7 +49,11 @@ class TestVolumeRebalanceStart(object):
                 "errors": {}
             })
         flow1.start()
-        flow1.atom().start.assert_called_with('Volume1', True, False)
+        flow1.atom().start.assert_called_with(
+            'Volume1',
+            force=True,
+            fix_layout=False
+        )
         assert flow.api_job['status'] == "finished"
 
         flow2 = VolumeRebalanceStart(
@@ -64,7 +72,11 @@ class TestVolumeRebalanceStart(object):
                 "errors": {}
             })
         flow2.start()
-        flow2.atom().start.assert_called_with('Volume1', False, False)
+        flow2.atom().start.assert_called_with(
+            'Volume1',
+            force=False,
+            fix_layout=False
+        )
         assert flow.api_job['status'] == "finished"
 
         flow3 = VolumeRebalanceStart(
@@ -83,5 +95,8 @@ class TestVolumeRebalanceStart(object):
                 "errors": {}
             })
         flow3.start()
-        flow3.atom().start.assert_called_with('Volume1', False, True)
+        flow3.atom().start.assert_called_with(
+            'Volume1',
+            force=False,
+            fix_layout=True)
         assert flow.api_job['status'] == "finished"

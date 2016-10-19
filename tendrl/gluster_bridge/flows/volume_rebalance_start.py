@@ -13,9 +13,13 @@ class VolumeRebalanceStart(object):
     def start(self):
         attributes = self.api_job['attributes']
         vol_name = attributes['volname']
-        fix_layout = attributes['fix_layout']
-        force = attributes['force']
-        self.atom().start(vol_name, force, fix_layout)
+        v_fix_layout = attributes.get('fix_layout')
+        v_force = attributes.get('force')
+        self.atom().start(
+            vol_name,
+            force=v_force,
+            fix_layout=v_fix_layout
+        )
         self.api_job['status'] = "finished"
         etcd.Client().write(self.api_job['request_id'],
                             json.dumps(self.api_job))

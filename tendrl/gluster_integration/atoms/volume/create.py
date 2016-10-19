@@ -2,8 +2,41 @@ import subprocess
 
 
 class Create(object):
-    def start(self, name, bricks):
+    def start(
+        self,
+        name,
+        bricks,
+        replica_count = None,
+        arbiter_count = None,
+        stripe_count = None,
+        disperse_count = None,
+        disperse_data_count = None,
+        redundancy_count = None,
+        transport = [],
+        ):
         cmd = ['gluster', 'volume', 'create', name]
+        print replica_count
+        if stripe_count is not None:
+            cmd.append('stripe')
+            cmd.append(stripe_count)
+        elif replica_count is not None:
+            cmd.append('replica')
+            cmd.append(replica_count)
+            if arbiter_count is not None:
+                cmd.append('arbiter')
+                cmd.append(arbiter_count)
+        elif disperse_count is not None:
+            cmd.append('disperse')
+            cmd.append(disperse_count)
+            if redundancy_count is not None:
+                cmd.append('redundancy')
+                cmd.append(redundancy_count)
+            if disperse_data_count is not None:
+                cmd.append('disperse_data')
+                cmd.append(disperse_data_count)
+        if transport:
+            cmd.append('transport')
+            cmd.append(','.join(transport))
         cmd.extend(bricks)
         cmd.append('force')
         cmd.append('--mode=script')
