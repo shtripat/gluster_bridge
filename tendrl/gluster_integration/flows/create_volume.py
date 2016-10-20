@@ -12,7 +12,6 @@ class CreateVolume(object):
 
     def start(self):
         attributes = self.api_job['attributes']
-        print attributes
         vol_name = attributes['volname']
         brickdetails = attributes['brickdetails']
         v_stripe_count = attributes.get('stripe_count')
@@ -22,7 +21,6 @@ class CreateVolume(object):
         v_disperse_data_count = attributes.get('disperse_data_count')
         v_redundancy_count = attributes.get('redundancy_count')
         v_transport = attributes.get('transport')
-        print v_stripe_count
         if v_stripe_count is not None:
             self.atom().start(
                 vol_name,
@@ -31,7 +29,6 @@ class CreateVolume(object):
                 stripe_count = v_stripe_count
             )
         elif v_replica_count is not None:
-            print v_replica_count
             self.atom().start(
                 vol_name,
                 brickdetails,
@@ -39,7 +36,6 @@ class CreateVolume(object):
                 replica_count = v_replica_count,
                 arbiter_count = v_arbiter_count
             )
-            print "Hell"
         elif v_disperse_count is not None:
             self.atom().start(
                 vol_name,

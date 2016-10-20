@@ -15,7 +15,6 @@ class Create(object):
         transport = [],
         ):
         cmd = ['gluster', 'volume', 'create', name]
-        print replica_count
         if stripe_count is not None:
             cmd.append('stripe')
             cmd.append(str(stripe_count))
