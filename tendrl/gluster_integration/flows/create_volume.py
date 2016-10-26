@@ -25,31 +25,31 @@ class CreateVolume(object):
             self.atom().start(
                 vol_name,
                 brickdetails,
-                transport = v_transport,
-                stripe_count = v_stripe_count
+                transport=v_transport,
+                stripe_count=v_stripe_count
             )
         elif v_replica_count is not None:
             self.atom().start(
                 vol_name,
                 brickdetails,
-                transport = v_transport,
-                replica_count = v_replica_count,
-                arbiter_count = v_arbiter_count
+                transport=v_transport,
+                replica_count=v_replica_count,
+                arbiter_count=v_arbiter_count
             )
         elif v_disperse_count is not None:
             self.atom().start(
                 vol_name,
                 brickdetails,
-                transport = v_transport,
-                disperse_count = v_disperse_count,
-                disperse_data_count = v_disperse_data_count,
-                redundancy_count = v_redundancy_count
+                transport=v_transport,
+                disperse_count=v_disperse_count,
+                disperse_data_count=v_disperse_data_count,
+                redundancy_count=v_redundancy_count
             )
         else:
             self.atom().start(
                 vol_name,
                 brickdetails,
-                transport = v_transport
+                transport=v_transport
             )
         self.api_job['status'] = "finished"
         etcd.Client().write(self.api_job['request_id'],

@@ -6,13 +6,13 @@ class Create(object):
         self,
         name,
         bricks,
-        replica_count = None,
-        arbiter_count = None,
-        stripe_count = None,
-        disperse_count = None,
-        disperse_data_count = None,
-        redundancy_count = None,
-        transport = [],
+        replica_count=None,
+        arbiter_count=None,
+        stripe_count=None,
+        disperse_count=None,
+        disperse_data_count=None,
+        redundancy_count=None,
+        transport=[],
         ):
         cmd = ['gluster', 'volume', 'create', name]
         if stripe_count is not None:
