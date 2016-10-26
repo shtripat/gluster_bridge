@@ -297,247 +297,247 @@ object_details:
           - "peer"
         version: "0.1.0"
 
-  flows:
-    CreateVolume:
-      enabled: True
-      tendrl_context: "$cluster.id"
-      uuid: "1951e821-7aa9-4a91-8183-e73bc8275b8e"
-      description: "Create Volume with pre-existing bricks"
-      atoms: ["volume.create"]
-      pre_run : []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.create_volume.CreateVolume"
-      type: Create
-      outputs:
-        - "volname"
-      inputs:
-        - "volname"
-        - ["stripe_count"]
-        - ["replica_count"]
-        - ["disperse_count"]
-        - ["redundancy_count"]
-        - ["transport"]
-        - "brickdetails"
-        - ["force"]
-      version: "0.1.0"
+flows:
+  CreateVolume:
+    enabled: True
+    tendrl_context: "$cluster.id"
+    uuid: "1951e821-7aa9-4a91-8183-e73bc8275b8e"
+    description: "Create Volume with pre-existing bricks"
+    atoms: ["volume.create"]
+    pre_run : []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.create_volume.CreateVolume"
+    type: Create
+    outputs:
+      - "volname"
+    inputs:
+      - "volname"
+      - ["stripe_count"]
+      - ["replica_count"]
+      - ["disperse_count"]
+      - ["redundancy_count"]
+      - ["transport"]
+      - "brickdetails"
+      - ["force"]
+    version: "0.1.0"
 
-    DeleteVolume:
-      enabled: True
-      tendrl_context: "$volume.id"
-      uuid: "91a8b656-903b-11e6-ae22-56b6b6499611"
-      description: "Delete an existing volume"
-      atoms: ["volume.delete"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.delete_volume.DeleteVolume"
-      type: Delete
-      outputs:
-        - "success"
-      inputs:
-        - "volname"
-      version: "0.1.0"
+  DeleteVolume:
+    enabled: True
+    tendrl_context: "$volume.id"
+    uuid: "91a8b656-903b-11e6-ae22-56b6b6499611"
+    description: "Delete an existing volume"
+    atoms: ["volume.delete"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.delete_volume.DeleteVolume"
+    type: Delete
+    outputs:
+      - "success"
+    inputs:
+      - "volname"
+    version: "0.1.0"
 
-    StartVolume:
-      enabled: True
-      tendrl_context: "$volume.id"
-      uuid: "e5429376-903c-11e6-ae22-56b6b6499611"
-      description: "Start a volume"
-      atoms: ["volume.start"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.start_volume.StartVolume"
-      type: Start
-      outputs:
-        - "success"
-      inputs:
-        - "volname"
-      version: "0.1.0"
+  StartVolume:
+    enabled: True
+    tendrl_context: "$volume.id"
+    uuid: "e5429376-903c-11e6-ae22-56b6b6499611"
+    description: "Start a volume"
+    atoms: ["volume.start"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.start_volume.StartVolume"
+    type: Start
+    outputs:
+      - "success"
+    inputs:
+      - "volname"
+    version: "0.1.0"
 
-    StopVolume:
-      enabled: True
-      tendrl_context: "$volume.id"
-      uuid: "cc4661e2-9044-11e6-ae22-56b6b6499611"
-      description: "Stop a volume"
-      atoms: ["volume.stop"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.stop_volume.StopVolume"
-      type: Stop
-      outputs:
-        - "success"
-      inputs:
-        - "volname"
-      version: "0.1.0"
+  StopVolume:
+    enabled: True
+    tendrl_context: "$volume.id"
+    uuid: "cc4661e2-9044-11e6-ae22-56b6b6499611"
+    description: "Stop a volume"
+    atoms: ["volume.stop"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.stop_volume.StopVolume"
+    type: Stop
+    outputs:
+      - "success"
+    inputs:
+      - "volname"
+    version: "0.1.0"
 
-    SetVolumeOptions:
-      enabled: True
-      tendrl_context: "$volume.id"
-      uuid: "5a433fd8-9045-11e6-ae22-56b6b6499611"
-      description: "Set a volume option"
-      atoms: ["volume.set"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.set_volume_option.SetVolumeOption"
-      type: SetVolumeOption
-      outputs:
-        - "success"
-      inputs:
-        - "volname"
-        - "option_name"
-        - "option_value"
-      version: "0.1.0"
+  SetVolumeOptions:
+    enabled: True
+    tendrl_context: "$volume.id"
+    uuid: "5a433fd8-9045-11e6-ae22-56b6b6499611"
+    description: "Set a volume option"
+    atoms: ["volume.set"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.set_volume_option.SetVolumeOption"
+    type: SetVolumeOption
+    outputs:
+      - "success"
+    inputs:
+      - "volname"
+      - "option_name"
+      - "option_value"
+    version: "0.1.0"
 
-    AddBrick:
-      enabled: True
-      tendrl_context: "$volume.id"
-      uuid: "c416a35e-9046-11e6-ae22-56b6b6499611"
-      description: "Add a brick to the volume"
-      atoms: ["volume.add_brick"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.add_volume_brick.AddVolumeBrick"
-      type: AddBrick
-      outputs:
-        - "success"
-      inputs:
-        - "volname"
-        - "brickdetails"
-      version: "0.1.0"
+  AddBrick:
+    enabled: True
+    tendrl_context: "$volume.id"
+    uuid: "c416a35e-9046-11e6-ae22-56b6b6499611"
+    description: "Add a brick to the volume"
+    atoms: ["volume.add_brick"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.add_volume_brick.AddVolumeBrick"
+    type: AddBrick
+    outputs:
+      - "success"
+    inputs:
+      - "volname"
+      - "brickdetails"
+    version: "0.1.0"
 
-    RemoveBrickStart:
-      enabled: True
-      tendrl_context: "$brick.id"
-      uuid: "80375772-9047-11e6-ae22-56b6b6499611"
-      description: "Start a remove brick on volume"
-      atoms: ["volume.remove_brick_start"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.volume_remove_brick_start.VolumeRemoveBrickStart"
-      type: RemoveBrickStart
-      outputs:
-        - "success"
-      inputs:
-        - "volname"
-        - "brick_name"
-      version: "0.1.0"
+  RemoveBrickStart:
+    enabled: True
+    tendrl_context: "$brick.id"
+    uuid: "80375772-9047-11e6-ae22-56b6b6499611"
+    description: "Start a remove brick on volume"
+    atoms: ["volume.remove_brick_start"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.volume_remove_brick_start.VolumeRemoveBrickStart"
+    type: RemoveBrickStart
+    outputs:
+      - "success"
+    inputs:
+      - "volname"
+      - "brick_name"
+    version: "0.1.0"
 
-    RemoveBrickCommit:
-      enabled: True
-      tendrl_context: "$brick.id"
-      uuid: "8a01cbbc-904b-11e6-ae22-56b6b6499611"
-      description: "Commit a remove brick task on volume"
-      atoms: ["volume.remove_brick_commit"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.volume_remove_brick_commit.VolumeRemoveBrickCommit"
-      type: RemoveBrickCommit
-      outputs:
-        - "success"
-      inputs:
-        - "volname"
-        - "brick_name"
-      version: "0.1.0"
+  RemoveBrickCommit:
+    enabled: True
+    tendrl_context: "$brick.id"
+    uuid: "8a01cbbc-904b-11e6-ae22-56b6b6499611"
+    description: "Commit a remove brick task on volume"
+    atoms: ["volume.remove_brick_commit"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.volume_remove_brick_commit.VolumeRemoveBrickCommit"
+    type: RemoveBrickCommit
+    outputs:
+      - "success"
+    inputs:
+      - "volname"
+      - "brick_name"
+    version: "0.1.0"
 
-    ReplaceBrickCommit:
-      enabled: True
-      tendrl_context: "$brick.id"
-      uuid: "2dd06e6a-904c-11e6-ae22-56b6b6499611"
-      description: "Commit a replace brick on volume"
-      atoms: ["volume.replace_brick_start"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.volume_replace_brick_commit.VolumeReplaceBrickCommit"
-      type: ReplaceBrickCommit
-      outputs:
-        - "success"
-      inputs:
-        - "volname"
-        - "source_brick"
-        - "destination_brick"
-      version: "0.1.0"
+  ReplaceBrickCommit:
+    enabled: True
+    tendrl_context: "$brick.id"
+    uuid: "2dd06e6a-904c-11e6-ae22-56b6b6499611"
+    description: "Commit a replace brick on volume"
+    atoms: ["volume.replace_brick_start"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.volume_replace_brick_commit.VolumeReplaceBrickCommit"
+    type: ReplaceBrickCommit
+    outputs:
+      - "success"
+    inputs:
+      - "volname"
+      - "source_brick"
+      - "destination_brick"
+    version: "0.1.0"
 
-    RebalanceStart:
-      enabled: True
-      tendrl_context: "$volume.id"
-      uuid: "c0a87812-905c-11e6-ae22-56b6b6499611"
-      description: "Starts a rebalance of volume"
-      atoms: ["volume.rebalance_start"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.volume_rebalance_start.VolumeRebalanceStart"
-      type: RebalanceStart
-      outputs:
-        - "success"
-      inputs:
-        - "volname"
-        - ["fix_layout"]
-        - ["force"]
-      version: "0.1.0"
+  RebalanceStart:
+    enabled: True
+    tendrl_context: "$volume.id"
+    uuid: "c0a87812-905c-11e6-ae22-56b6b6499611"
+    description: "Starts a rebalance of volume"
+    atoms: ["volume.rebalance_start"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.volume_rebalance_start.VolumeRebalanceStart"
+    type: RebalanceStart
+    outputs:
+      - "success"
+    inputs:
+      - "volname"
+      - ["fix_layout"]
+      - ["force"]
+    version: "0.1.0"
 
-    RebalanceStop:
-      enabled: True
-      tendrl_context: "$volume.id"
-      uuid: "17481172-905e-11e6-ae22-56b6b6499611"
-      description: "Stops a rebalance of volume"
-      atoms: ["volume.rebalance_stop"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.volume_rebalance_stop.VolumeRebalanceStop"
-      type: RebalanceStop
-      outputs:
-        - "node"
-        - "rebalanced_files"
-        - "size"
-        - "scanned_files"
-        - "status"
-      inputs:
-        - "volname"
-      version: "0.1.0"
+  RebalanceStop:
+    enabled: True
+    tendrl_context: "$volume.id"
+    uuid: "17481172-905e-11e6-ae22-56b6b6499611"
+    description: "Stops a rebalance of volume"
+    atoms: ["volume.rebalance_stop"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.volume_rebalance_stop.VolumeRebalanceStop"
+    type: RebalanceStop
+    outputs:
+      - "node"
+      - "rebalanced_files"
+      - "size"
+      - "scanned_files"
+      - "status"
+    inputs:
+      - "volname"
+    version: "0.1.0"
 
-    LogRotate:
-      enabled: True
-      tendrl_context: "$volume.id"
-      uuid: "c53e8ffe-905e-11e6-ae22-56b6b6499611"
-      description: "Rotates the logs for volume"
-      atoms: ["volume.log_rotate"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.volume_log_rotate.VolumeLogRotate"
-      type: LogRotate
-      outputs:
-        - "success"
-      inputs:
-        - "volname"
-      version: "0.1.0"
+  LogRotate:
+    enabled: True
+    tendrl_context: "$volume.id"
+    uuid: "c53e8ffe-905e-11e6-ae22-56b6b6499611"
+    description: "Rotates the logs for volume"
+    atoms: ["volume.log_rotate"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.volume_log_rotate.VolumeLogRotate"
+    type: LogRotate
+    outputs:
+      - "success"
+    inputs:
+      - "volname"
+    version: "0.1.0"
 
-    PeerProbe:
-      enabled: True
-      tendrl_context: "$cluster.id"
-      uuid: "73421b1e-943a-11e6-ae22-56b6b6499611"
-      description: "Peer probes a new node"
-      atoms: ["peer.probe"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.peer_probe.PeerProbe"
-      type: PeerProbe
-      outputs:
-        - "success"
-      inputs:
-        - "peer"
-      version: "0.1.0"
+  PeerProbe:
+    enabled: True
+    tendrl_context: "$cluster.id"
+    uuid: "73421b1e-943a-11e6-ae22-56b6b6499611"
+    description: "Peer probes a new node"
+    atoms: ["peer.probe"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.peer_probe.PeerProbe"
+    type: PeerProbe
+    outputs:
+      - "success"
+    inputs:
+      - "peer"
+    version: "0.1.0"
 
-    PeerDetach:
-      enabled: True
-      tendrl_context: "$host.id"
-      uuid: "f57f6f20-9447-11e6-ae22-56b6b6499611"
-      description: "Detaches a node from cluster"
-      atoms: ["peer.detach"]
-      pre_run: []
-      post_run: []
-      run: "tendrl.gluster_bridge.flows.peer_detach.PeerDetach"
-      type: PeerDetach
-      outputs:
-        - "success"
-      inputs:
-        - "peer"
-      version: "0.1.0"
+  PeerDetach:
+    enabled: True
+    tendrl_context: "$host.id"
+    uuid: "f57f6f20-9447-11e6-ae22-56b6b6499611"
+    description: "Detaches a node from cluster"
+    atoms: ["peer.detach"]
+    pre_run: []
+    post_run: []
+    run: "tendrl.gluster_bridge.flows.peer_detach.PeerDetach"
+    type: PeerDetach
+    outputs:
+      - "success"
+    inputs:
+      - "peer"
+    version: "0.1.0"
