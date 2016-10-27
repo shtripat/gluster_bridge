@@ -28,9 +28,15 @@ object_details:
       replica_count:
         type: Integer
         help: "Replica count of volume"
+      arbiter_count:
+        type: Integer
+        help: "Arbiter count of volume"
       disperse_count:
         type: Integer
         help: "Disperse count of volume"
+      disperse_data_count:
+        type: Integer
+        help: "Disperse data count of volume"
       redundancy_count:
         type: Integer
         help: "Redundancy count of volume"
@@ -51,25 +57,30 @@ object_details:
           flows: ["CreateVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.create.Create"
           type: "create"
-          pre_run : [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_create_data"
-          ]
-          post_run: [
-              "tendrl.gluster_bridge.flows.start_volume.StartVolume.start"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_not_exists"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_create_data"
+          post_run:
+            - "tendrl.gluster_bridge.flows.start_volume.StartVolume.start"
           name: "create_volume"
           outputs:
-            - "volname"
+            -
+              volname:
+                required: True
           inputs:
-            - "volname"
-            - ["stripe_count"]
-            - ["replica_count"]
-            - ["disperse_count"]
-            - ["redundancy_count"]
-            - ["transport"]
-            - "brickdetails"
-            - ["force"]
+            mandatory:
+              - volname
+              - brickdetails
+            optional:
+              - stripe_count
+              - replica_count
+              - arbiter_count
+              - disperse_count
+              - disperse_data_count
+              - redundancy_count
+              - transport
+              - brickdetails
+              - force
           version: "0.1.0"
         delete:
           enabled: True
@@ -77,17 +88,20 @@ object_details:
           flows: ["DeleteVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.delete.Delete"
           type: "delete"
-          pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_delete_data",
-              "tendrl.gluster_bridge.flows.stop_volume.StopVolume.start"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_exists"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_delete_data"
+            - "tendrl.gluster_bridge.flows.stop_volume.StopVolume.start"
           post_run: []
           name: "delete_volume"
           outputs:
-            - "success"
+            -
+              success:
+                required: True
           inputs:
-            - "volname"
+            mandatory:
+              - volname
+            optional: ~
           version: "0.1.0"
         start:
           enabled: True
@@ -95,17 +109,20 @@ object_details:
           flows: ["StartVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.start.Start"
           type: "action"
-          pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_start_data",
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_stopped"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_exists"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_start_data"
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_stopped"
           post_run: []
           name: "start_volume"
           outputs:
-            - "success"
+            -
+              success:
+                required: True
           inputs:
-            - "volname"
+            mandatory:
+              - volname
+            optional: ~
           version: "0.1.0"
         stop:
           enabled: True
@@ -113,17 +130,20 @@ object_details:
           flows: ["StopVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.stop.Stop"
           type: "action"
-          pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_stop_data",
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_started"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_exists"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_stop_data"
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_started"
           post_run: []
           name: "stop_volume"
           outputs:
-            - "success"
+            -
+              success:
+                required: True
           inputs:
-            - "volname"
+            mandatory:
+              - volname
+            optional: ~
           version: "0.1.0"
         set:
           enabled: True
@@ -131,18 +151,21 @@ object_details:
           flows: ["SetVolumeOptions"]
           run: "tendrl.gluster_bridge.atoms.volume.set.Set"
           type: "update"
-          pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_set_option_data"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_exists_for_set"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_set_option_data"
           post_run: []
           name: "set_volume_options"
           outputs:
-            - "success"
+            -
+              success:
+                required: True
           inputs:
-            - "volname"
-            - "option_name"
-            - "option_value"
+            mandatory:
+              - volname
+              - option_name
+              - option_value
+            optional: ~
           version: "0.1.0"
         add_brick:
           enabled: True
@@ -151,16 +174,20 @@ object_details:
           run: "tendrl.gluster_bridge.atoms.volume.add_brick.AddBrick"
           type: "action"
           pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists_for_add_brick",
               "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_details"
           ]
           post_condition: []
           name: "add_brick"
           outputs:
-            - "success"
+            -
+              success:
+                required: True
           inputs:
-            - "volname"
-            - "brickdetails"
+            mandatory:
+              - volname
+              - brickdetails
+            optional: ~
           version: "0.1.0"
         remove_brick_start:
           enabled: True
@@ -168,18 +195,21 @@ object_details:
           flows: ["RemoveBrickStart"]
           run: "tendrl.gluster_bridge.atoms.volume.remove_brick_start.RemoveBrickStart"
           type: "action"
-          pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_volume_state_for_remove_brick"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_exists_for_remove_brick"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_volume_state_for_remove_brick"
           post_run: []
           name: "remove_brick_start"
           outputs:
-            - "success"
+            -
+              success:
+                required: True
           inputs:
-            - "volname"
-            - "brick_name"
+            mandatory:
+              - volname
+              - brick_name
+            optional: ~
           version: "0.1.0"
         remove_brick_stop:
           enabled: True
@@ -187,18 +217,21 @@ object_details:
           flows: ["RemoveBrickStop"]
           run: "tendrl.gluster_bridge.atoms.volume.remove_brick_stop.RemoveBrickStop"
           type: "action"
-          pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail",
-              "tendrl.gluster_bridge.atoms.volume.validations.remove_brick_running"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_exists_for_remove_brick"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail"
+            - "tendrl.gluster_bridge.atoms.volume.validations.remove_brick_running"
           post_run: []
           name: "remove_brick_stop"
           outputs:
-            - "success"
+            -
+              success:
+                required: True
           inputs:
-            - "volname"
-            - "brick_name"
+            mandatory:
+              - volname
+              - brick_name
+            optional: ~
           version: "0.1.0"
         remove_brick_commit:
           enabled: True
@@ -206,18 +239,21 @@ object_details:
           flows: ["RemoveBrickCommit"]
           run: "tendrl.gluster_bridge.atoms.volume.remove_brick_commit.RemoveBrickCommit"
           type: "action"
-          pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail",
-              "tendrl.gluster_bridge.atoms.volume.validations.remove_brick_completed"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_exists_for_remove_brick"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail"
+            - "tendrl.gluster_bridge.atoms.volume.validations.remove_brick_completed"
           post_run: []
           name: "remove_brick_commit"
           outputs:
-            - "success"
+            -
+              success:
+                required: True
           inputs:
-            - "volname"
-            - "brick_name"
+            mandatory:
+              - volname
+              - brick_name
+            optional: ~
           version: "0.1.0"
         replace_brick_commit:
           enabled: True
@@ -225,19 +261,22 @@ object_details:
           flows: ["ReplaceBrickCommit"]
           run: "tendrl.gluster_bridge.atoms.volume.replace_brick_start.ReplaceBrickCommit"
           type: "action"
-          pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_replace_brick_state"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_exists_for_replace_brick"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail_for_replace"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_replace_brick_state"
           post_run: []
           name: "replace_brick_commit"
           outputs:
-            - "success"
+            -
+              success:
+                required: True
           inputs:
-            - "volname"
-            - "source_brick"
-            - "destination_brick"
+            mandatory:
+              - volname
+              - source_brick
+              - destination_brick
+            optional: ~
           version: "0.1.0"
         rebalance_start:
           enabled: True
@@ -245,19 +284,22 @@ object_details:
           flows: ["RebalanceStart"]
           run: "tendrl.gluster_bridge.atoms.volume.rebalance_start.RebalanceStart"
           type: "action"
-          pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_rebalance_data",
-              "tendrl.gluster_bridge.atoms.volume.validations.rebalance_not_started"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_exists_for_rebalance"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_rebalance_data"
+            - "tendrl.gluster_bridge.atoms.volume.validations.rebalance_not_started"
           post_run: []
           name: "rebalance_start"
           outputs:
-            - "success"
+            -
+               success:
+                 required: True
           inputs:
-            - "volname"
-            - ["fix_layout"]
-            - ["force"]
+            mandatory:
+              - volname
+            optional:
+              - fix_layout
+              - force
           version: "0.1.0"
         rebalance_stop:
           enabled: True
@@ -265,21 +307,32 @@ object_details:
           flows: ["RebalanceStop"]
           run: "tendrl.gluster_bridge.atoms.volume.rebalance_stop.RebalanceStop"
           type: "action"
-          pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_rebalance_stop_data",
-              "tendrl.gluster_bridge.atoms.volume.validations.rebalance_started"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_exists"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_rebalance_stop_data"
+            - "tendrl.gluster_bridge.atoms.volume.validations.rebalance_started"
           post_run: []
           name: "rebalance_stop"
           outputs:
-            - "node"
-            - "rebalanced_files"
-            - "size"
-            - "scanned_files"
-            - "status"
+            -
+              node:
+                required: True
+            -
+              rebalanced_files:
+                required: True
+            -
+              size:
+                required: True
+            -
+              scanned_files:
+                required: True
+            -
+              status:
+                required: True
           inputs:
-            - "volname"
+            mandatory:
+              - volname
+            optional: ~
           version: "0.1.0"
         log_rotate:
           enabled: True
@@ -287,16 +340,19 @@ object_details:
           flows: ["LogRotate"]
           run: "tendrl.gluster_bridge.atoms.volume.log_rotate.LogRotate"
           type: "action"
-          pre_run: [
-              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
-              "tendrl.gluster_bridge.atoms.volume.validations.valid_volume_name"
-          ]
+          pre_run:
+            - "tendrl.gluster_bridge.atoms.volume.validations.volume_exists"
+            - "tendrl.gluster_bridge.atoms.volume.validations.valid_volume_name"
           post_run: []
           name: "log_rotate"
           outputs:
-            - "success"
+            -
+              success:
+                required: True
           inputs:
-            - "volname"
+            mandatory:
+              - volname
+            optional: ~
           version: "0.1.0"
   brick:
     enabled: True
@@ -324,15 +380,18 @@ object_details:
         flows: ["PeerProbe"]
         run: "tendrl.gluster_bridge.atoms.peer.probe.Probe"
         type: "action"
-        pre_run: [
-            "tendrl.gluster_bridge.atoms.peer.validations.valid_gluster_node"
-        ]
+        pre_run:
+          - "tendrl.gluster_bridge.atoms.peer.validations.valid_gluster_node"
         post_run: []
         name: "peer_probe"
         outputs:
-          - "success"
+          -
+            success:
+              required: True
         inputs:
-          - "peer"
+          mandatory:
+            - peer
+          optional: ~
         version: "0.1.0"
       detach:
         enabled: True
@@ -340,15 +399,18 @@ object_details:
         flows: ["PeerDetach"]
         run: "tendrl.gluster_bridge.atoms.peer.detach.Detach"
         type: "action"
-        pre_run: [
-            "tendrl.gluster_bridge.atoms.peer.validations.valid_cluster_peer"
-        ]
+        pre_run:
+          - "tendrl.gluster_bridge.atoms.peer.validations.valid_cluster_peer"
         post_run: []
         name: "detach"
         outputs:
-          - "success"
+          -
+            success:
+              required: True
         inputs:
-          - "peer"
+          mandatory:
+            - peer
+          optional: ~
         version: "0.1.0"
 
 flows:
@@ -363,16 +425,22 @@ flows:
     run: "tendrl.gluster_bridge.flows.create_volume.CreateVolume"
     type: Create
     outputs:
-      - "volname"
+      -
+        volname:
+          required: True
     inputs:
-      - "volname"
-      - ["stripe_count"]
-      - ["replica_count"]
-      - ["disperse_count"]
-      - ["redundancy_count"]
-      - ["transport"]
-      - "brickdetails"
-      - ["force"]
+      mandatory:
+        - volname
+        - brickdetails
+      optional:
+        - stripe_count
+        - replica_count
+        - arbiter_count
+        - disperse_count
+        - disperse_data_count
+        - redundancy_count
+        - transport
+        - force
     version: "0.1.0"
 
   DeleteVolume:
@@ -386,9 +454,13 @@ flows:
     run: "tendrl.gluster_bridge.flows.delete_volume.DeleteVolume"
     type: Delete
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "volname"
+      mandatory:
+        - volname
+      optional: ~
     version: "0.1.0"
 
   StartVolume:
@@ -402,9 +474,13 @@ flows:
     run: "tendrl.gluster_bridge.flows.start_volume.StartVolume"
     type: Start
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "volname"
+      mandatory:
+        - volname
+      optional: ~
     version: "0.1.0"
 
   StopVolume:
@@ -418,9 +494,13 @@ flows:
     run: "tendrl.gluster_bridge.flows.stop_volume.StopVolume"
     type: Stop
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "volname"
+      mandatory:
+        - volname
+      optional: ~
     version: "0.1.0"
 
   SetVolumeOptions:
@@ -434,9 +514,13 @@ flows:
     run: "tendrl.gluster_bridge.flows.set_volume_option.SetVolumeOption"
     type: SetVolumeOption
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "volname"
+      mandatory:
+        - volname
+      optional: ~
       - "option_name"
       - "option_value"
     version: "0.1.0"
@@ -452,10 +536,14 @@ flows:
     run: "tendrl.gluster_bridge.flows.add_volume_brick.AddVolumeBrick"
     type: AddBrick
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "volname"
-      - "brickdetails"
+      mandatory:
+        - volname
+        - brickdetails
+      optional: ~
     version: "0.1.0"
 
   RemoveBrickStart:
@@ -469,10 +557,14 @@ flows:
     run: "tendrl.gluster_bridge.flows.volume_remove_brick_start.VolumeRemoveBrickStart"
     type: RemoveBrickStart
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "volname"
-      - "brick_name"
+      mandatory:
+        - volname
+        - brick_name
+      optional: ~
     version: "0.1.0"
 
   RemoveBrickCommit:
@@ -486,10 +578,14 @@ flows:
     run: "tendrl.gluster_bridge.flows.volume_remove_brick_commit.VolumeRemoveBrickCommit"
     type: RemoveBrickCommit
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "volname"
-      - "brick_name"
+      mandatory:
+        - volname
+        - brick_name
+      optional: ~
     version: "0.1.0"
 
   ReplaceBrickCommit:
@@ -503,11 +599,15 @@ flows:
     run: "tendrl.gluster_bridge.flows.volume_replace_brick_commit.VolumeReplaceBrickCommit"
     type: ReplaceBrickCommit
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "volname"
-      - "source_brick"
-      - "destination_brick"
+      mandatory:
+        - volname
+        - source_brick
+        - destination_brick
+      optional: ~
     version: "0.1.0"
 
   RebalanceStart:
@@ -521,11 +621,15 @@ flows:
     run: "tendrl.gluster_bridge.flows.volume_rebalance_start.VolumeRebalanceStart"
     type: RebalanceStart
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "volname"
-      - ["fix_layout"]
-      - ["force"]
+      mandatory:
+        - volname
+      optional:
+        - fix_layout
+        - force
     version: "0.1.0"
 
   RebalanceStop:
@@ -539,13 +643,25 @@ flows:
     run: "tendrl.gluster_bridge.flows.volume_rebalance_stop.VolumeRebalanceStop"
     type: RebalanceStop
     outputs:
-      - "node"
-      - "rebalanced_files"
-      - "size"
-      - "scanned_files"
-      - "status"
+      -
+        node:
+          required: True
+      -
+        rebalanced_files:
+          required: True
+      -
+        size:
+          required: True
+      -
+        scanned_files:
+          required: True
+      -
+        status:
+          required: True
     inputs:
-      - "volname"
+      mandatory:
+        - volname
+      optional: ~
     version: "0.1.0"
 
   LogRotate:
@@ -559,9 +675,13 @@ flows:
     run: "tendrl.gluster_bridge.flows.volume_log_rotate.VolumeLogRotate"
     type: LogRotate
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "volname"
+      mandatory:
+        - volname
+      optional: ~
     version: "0.1.0"
 
   PeerProbe:
@@ -575,9 +695,13 @@ flows:
     run: "tendrl.gluster_bridge.flows.peer_probe.PeerProbe"
     type: PeerProbe
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "peer"
+      mandatory:
+        - peer
+      optional: ~
     version: "0.1.0"
 
   PeerDetach:
@@ -591,7 +715,11 @@ flows:
     run: "tendrl.gluster_bridge.flows.peer_detach.PeerDetach"
     type: PeerDetach
     outputs:
-      - "success"
+      -
+        success:
+          required: True
     inputs:
-      - "peer"
+      mandatory:
+        - peer
+      optional: ~
     version: "0.1.0"

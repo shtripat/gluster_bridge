@@ -1,4 +1,22 @@
 
+
+def volume_not_exists(
+    volname,
+    brickdetails,
+    stripe_count=None,
+    replica_count=None,
+    arbiter_count=None,
+    disperse_count=None,
+    disperse_data_count=None,
+    redundancy_count=None,
+    transport=[],
+    force=False
+):
+    # TODO implement the actual logic to check etcd for and make sure volume
+    # getting created doesnt exist already
+    return True
+
+
 def volume_exists(volname):
     # TODO implement the actual logic to check etcd for existence of volume
     return True
@@ -13,7 +31,8 @@ def valid_create_data(
     disperse_count=None,
     disperse_data_count=None,
     redundancy_count=None,
-    transport=[]
+    transport=[],
+    force=False
     ):
     if volname == "":
         return False
@@ -61,18 +80,30 @@ def volume_started(volname):
     return True
 
 
+def volume_exists_for_set(volname, option_name, option_value):
+    return volume_exists(volname)
+
+
 def valid_set_option_data(volname, option_name, option_value):
     if volname == "" or option_name == "" or option_value is None:
         return False
     return True
 
 
-def valid_brick_details(brickdetails):
+def volume_exists_for_add_brick(volname, brickdetails):
+    return volume_exists(volname)
+
+
+def valid_brick_details(volname, brickdetails):
     if not isinstance(brickdetails, list):
         return False
     if len(brickdetails) == 0:
         return False
     return True
+
+
+def volume_exists_for_remove_brick(volname, brick_name):
+    return volume_exists(volname)
 
 
 def valid_brick_detail(volname, brick_name):
@@ -83,7 +114,7 @@ def valid_brick_detail(volname, brick_name):
     return True
 
 
-def valid_volume_state_for_remove_brick(volname):
+def valid_volume_state_for_remove_brick(volname, brick_name):
     # TODO check etcd to find if there are any active opertaions on the volume
     # If operations like rebalance etc running, remove brick shouldnt be
     # allowed
@@ -102,17 +133,31 @@ def remove_brick_completed(volname, brick_name):
     return True
 
 
+def volume_exists_for_replace_brick(volname, source_brick, destination_brick):
+    return volume_exists(volname)
+
+
+def valid_brick_detail_for_replace(volname, source_brick, destination_brick):
+    if volname == "" or source_brick == "" or destination_brick == "":
+        return False
+    return True
+
+
 def valid_replace_brick_state(volname, source_brick, destination_brick):
     # TODO check etcd to find if valid replace brick operation available for
     # volume for commit
     return True
 
 
-def valid_rebalance_data(volname):
+def volume_exists_for_rebalance(volname, fix_layout=False, force=False):
+    return volume_exists(volname)
+
+
+def valid_rebalance_data(volname, fix_layout=False, force=False):
     return valid_volume_name(volname)
 
 
-def rebalance_not_started(volname):
+def rebalance_not_started(volname, fix_layout=False, force=False):
     # TODO check etcd to find if rebalance is not already running for volume
     # If running return False
     return True
