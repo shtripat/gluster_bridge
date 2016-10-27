@@ -12,7 +12,7 @@ object_details:
     enabled: True
     value: /clusters/$cluster.id/tendrl_context
     attrs:
-      sds_type:
+      sds_nvr:
         type: String
         help: "gluster-3.8.3"
   volume:
@@ -51,8 +51,13 @@ object_details:
           flows: ["CreateVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.create.Create"
           type: "create"
-          pre_run : []
-          post_run: []
+          pre_run : [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_create_data"
+          ]
+          post_run: [
+              "tendrl.gluster_bridge.flows.start_volume.StartVolume.start"
+          ]
           name: "create_volume"
           outputs:
             - "volname"
@@ -72,7 +77,11 @@ object_details:
           flows: ["DeleteVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.delete.Delete"
           type: "delete"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_delete_data",
+              "tendrl.gluster_bridge.flows.stop_volume.StopVolume.start"
+          ]
           post_run: []
           name: "delete_volume"
           outputs:
@@ -86,7 +95,11 @@ object_details:
           flows: ["StartVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.start.Start"
           type: "action"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_start_data",
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_stopped"
+          ]
           post_run: []
           name: "start_volume"
           outputs:
@@ -100,7 +113,11 @@ object_details:
           flows: ["StopVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.stop.Stop"
           type: "action"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_stop_data",
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_started"
+          ]
           post_run: []
           name: "stop_volume"
           outputs:
@@ -114,7 +131,10 @@ object_details:
           flows: ["SetVolumeOptions"]
           run: "tendrl.gluster_bridge.atoms.volume.set.Set"
           type: "update"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_set_option_data"
+          ]
           post_run: []
           name: "set_volume_options"
           outputs:
@@ -130,7 +150,10 @@ object_details:
           flows: ["AddBrick"]
           run: "tendrl.gluster_bridge.atoms.volume.add_brick.AddBrick"
           type: "action"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_details"
+          ]
           post_condition: []
           name: "add_brick"
           outputs:
@@ -145,7 +168,11 @@ object_details:
           flows: ["RemoveBrickStart"]
           run: "tendrl.gluster_bridge.atoms.volume.remove_brick_start.RemoveBrickStart"
           type: "action"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_volume_state_for_remove_brick"
+          ]
           post_run: []
           name: "remove_brick_start"
           outputs:
@@ -160,7 +187,11 @@ object_details:
           flows: ["RemoveBrickStop"]
           run: "tendrl.gluster_bridge.atoms.volume.remove_brick_stop.RemoveBrickStop"
           type: "action"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail",
+              "tendrl.gluster_bridge.atoms.volume.validations.remove_brick_running"
+          ]
           post_run: []
           name: "remove_brick_stop"
           outputs:
@@ -175,7 +206,11 @@ object_details:
           flows: ["RemoveBrickCommit"]
           run: "tendrl.gluster_bridge.atoms.volume.remove_brick_commit.RemoveBrickCommit"
           type: "action"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail",
+              "tendrl.gluster_bridge.atoms.volume.validations.remove_brick_completed"
+          ]
           post_run: []
           name: "remove_brick_commit"
           outputs:
@@ -190,7 +225,11 @@ object_details:
           flows: ["ReplaceBrickCommit"]
           run: "tendrl.gluster_bridge.atoms.volume.replace_brick_start.ReplaceBrickCommit"
           type: "action"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_brick_detail",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_replace_brick_state"
+          ]
           post_run: []
           name: "replace_brick_commit"
           outputs:
@@ -206,7 +245,11 @@ object_details:
           flows: ["RebalanceStart"]
           run: "tendrl.gluster_bridge.atoms.volume.rebalance_start.RebalanceStart"
           type: "action"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_rebalance_data",
+              "tendrl.gluster_bridge.atoms.volume.validations.rebalance_not_started"
+          ]
           post_run: []
           name: "rebalance_start"
           outputs:
@@ -222,7 +265,11 @@ object_details:
           flows: ["RebalanceStop"]
           run: "tendrl.gluster_bridge.atoms.volume.rebalance_stop.RebalanceStop"
           type: "action"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_rebalance_stop_data",
+              "tendrl.gluster_bridge.atoms.volume.validations.rebalance_started"
+          ]
           post_run: []
           name: "rebalance_stop"
           outputs:
@@ -240,7 +287,10 @@ object_details:
           flows: ["LogRotate"]
           run: "tendrl.gluster_bridge.atoms.volume.log_rotate.LogRotate"
           type: "action"
-          pre_run: []
+          pre_run: [
+              "tendrl.gluster_bridge.atoms.volume.validations.volume_exists",
+              "tendrl.gluster_bridge.atoms.volume.validations.valid_volume_name"
+          ]
           post_run: []
           name: "log_rotate"
           outputs:
@@ -261,7 +311,7 @@ object_details:
 
   peer:
     enabled: True
-    value: "/clusters/$cluster.id/hosts/$host.id"
+    value: "/clusters/$cluster.id/peers/$peer.id"
     attrs:
       hostname:
         type: String
@@ -274,7 +324,9 @@ object_details:
         flows: ["PeerProbe"]
         run: "tendrl.gluster_bridge.atoms.peer.probe.Probe"
         type: "action"
-        pre_run: []
+        pre_run: [
+            "tendrl.gluster_bridge.atoms.peer.validations.valid_gluster_node"
+        ]
         post_run: []
         name: "peer_probe"
         outputs:
@@ -288,7 +340,9 @@ object_details:
         flows: ["PeerDetach"]
         run: "tendrl.gluster_bridge.atoms.peer.detach.Detach"
         type: "action"
-        pre_run: []
+        pre_run: [
+            "tendrl.gluster_bridge.atoms.peer.validations.valid_cluster_peer"
+        ]
         post_run: []
         name: "detach"
         outputs:
@@ -528,7 +582,7 @@ flows:
 
   PeerDetach:
     enabled: True
-    tendrl_context: "$host.id"
+    tendrl_context: "$peer.id"
     uuid: "f57f6f20-9447-11e6-ae22-56b6b6499611"
     description: "Detaches a node from cluster"
     atoms: ["peer.detach"]
