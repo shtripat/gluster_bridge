@@ -12,13 +12,14 @@ def volume_not_exists(
     transport=[],
     force=False
 ):
-    # TODO implement the actual logic to check etcd for and make sure volume
-    # getting created doesnt exist already
+    # TODO(T1D1) implement the actual logic to check etcd for and make sure
+    # volume getting created doesnt exist already
     return True
 
 
 def volume_exists(volname):
-    # TODO implement the actual logic to check etcd for existence of volume
+    # TODO(T1D2) implement the actual logic to check etcd for existence
+    # of volume
     return True
 
 
@@ -67,7 +68,8 @@ def valid_start_data(volname):
 
 
 def volume_stopped(volname):
-    # TODO implement the actual logic to check etcd for state of the volume
+    # TODO(T1D3) implement the actual logic to check etcd for state of
+    # the volume
     return True
 
 
@@ -76,7 +78,7 @@ def valid_stop_data(volname):
 
 
 def volume_started(volname):
-    # TODO implement the actual logic to check etcd for state of volume
+    # TODO(T1D4) implement the actual logic to check etcd for state of volume
     return True
 
 
@@ -115,21 +117,21 @@ def valid_brick_detail(volname, brick_name):
 
 
 def valid_volume_state_for_remove_brick(volname, brick_name):
-    # TODO check etcd to find if there are any active opertaions on the volume
-    # If operations like rebalance etc running, remove brick shouldnt be
-    # allowed
+    # TODO(T1D5) check etcd to find if there are any active opertaions on
+    # the volume. If operations like rebalance etc running, remove brick
+    # shouldnt be allowed
     return True
 
 
 def remove_brick_running(volname, brick_name):
-    # TODO check etcd to find if actually there is a remove brick running on
-    # volume for the said brick
+    # TODO(T1D6) check etcd to find if actually there is a remove brick
+    # running on volume for the said brick
     return True
 
 
 def remove_brick_completed(volname, brick_name):
-    # TODO check etcd to find if the remove brick operation is completed on
-    # the volume for said brick
+    # TODO(T1D7) check etcd to find if the remove brick operation is
+    # completed on the volume for said brick
     return True
 
 
@@ -144,8 +146,8 @@ def valid_brick_detail_for_replace(volname, source_brick, destination_brick):
 
 
 def valid_replace_brick_state(volname, source_brick, destination_brick):
-    # TODO check etcd to find if valid replace brick operation available for
-    # volume for commit
+    # TODO(T1D8) check etcd to find if valid replace brick operation available
+    # for volume for commit
     return True
 
 
@@ -158,8 +160,8 @@ def valid_rebalance_data(volname, fix_layout=False, force=False):
 
 
 def rebalance_not_started(volname, fix_layout=False, force=False):
-    # TODO check etcd to find if rebalance is not already running for volume
-    # If running return False
+    # TODO(T1D9) check etcd to find if rebalance is not already running for
+    # volume. If running return False
     return True
 
 
@@ -168,8 +170,8 @@ def valid_rebalance_stop_data(volname):
 
 
 def rebalance_started(volname):
-    # TODO check etcd to find if rebalance is already running for volume. If
-    # not return False
+    # TODO(T1D10) check etcd to find if rebalance is already running for volume
+    # If not return False
     return True
 
 
