@@ -12,7 +12,7 @@ class VolumeReplaceBrickCommit(object):
         self.atom = ReplaceBrickCommit
 
     def start(self):
-        attributes = self.api_job['attributes']
+        attributes = self.api_job['parameters']
         vol_name = attributes['volname']
         brick = attributes['source_brick']
         new_brick = attributes['destination_brick']

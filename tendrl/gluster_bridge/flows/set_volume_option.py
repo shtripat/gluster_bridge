@@ -11,7 +11,7 @@ class SetVolumeOption(object):
         self.atom = Set
 
     def start(self):
-        attributes = self.api_job['attributes']
+        attributes = self.api_job['parameters']
         vol_name = attributes['volname']
         option = attributes['option_name']
         option_value = attributes['option_value']

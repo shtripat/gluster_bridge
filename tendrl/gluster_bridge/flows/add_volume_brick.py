@@ -11,7 +11,7 @@ class AddVolumeBrick(object):
         self.atom = AddBrick
 
     def start(self):
-        attributes = self.api_job['attributes']
+        attributes = self.api_job['parameters']
         vol_name = attributes['volname']
         bricks = attributes['brickdetails']
         self.atom().start(vol_name, bricks)

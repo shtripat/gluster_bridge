@@ -11,7 +11,7 @@ class VolumeRebalanceStart(object):
         self.atom = RebalanceStart
 
     def start(self):
-        attributes = self.api_job['attributes']
+        attributes = self.api_job['parameters']
         vol_name = attributes['volname']
         v_fix_layout = attributes.get('fix_layout')
         v_force = attributes.get('force')

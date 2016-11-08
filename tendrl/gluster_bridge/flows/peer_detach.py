@@ -12,7 +12,7 @@ class PeerDetach(object):
         self.atom = Detach
 
     def start(self):
-        attributes = self.api_job['attributes']
+        attributes = self.api_job['parameters']
         peer = attributes['peer']
         # If host is trying to detach itself, dont allow
         if socket.gethostname() == peer:

@@ -11,7 +11,7 @@ class PeerProbe(object):
         self.atom = Probe
 
     def start(self):
-        attributes = self.api_job['attributes']
+        attributes = self.api_job['parameters']
         peer = attributes['peer']
         self.atom().start(peer)
         self.api_job['status'] = "finished"

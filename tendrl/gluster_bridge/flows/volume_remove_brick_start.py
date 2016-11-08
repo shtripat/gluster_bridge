@@ -12,7 +12,7 @@ class VolumeRemoveBrickStart(object):
         self.atom = RemoveBrickStart
 
     def start(self):
-        attributes = self.api_job['attributes']
+        attributes = self.api_job['parameters']
         vol_name = attributes['volname']
         brick = attributes['brick_name']
         self.atom().start(vol_name, brick)

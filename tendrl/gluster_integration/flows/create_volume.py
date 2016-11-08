@@ -11,7 +11,7 @@ class CreateVolume(object):
         self.atom = Create
 
     def start(self):
-        attributes = self.api_job['attributes']
+        attributes = self.api_job['parameters']
         vol_name = attributes['volname']
         brickdetails = attributes['brickdetails']
         v_stripe_count = attributes.get('stripe_count')

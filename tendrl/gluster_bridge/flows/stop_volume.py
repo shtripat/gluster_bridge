@@ -11,7 +11,7 @@ class StopVolume(object):
         self.atom = Stop
 
     def start(self):
-        attributes = self.api_job['attributes']
+        attributes = self.api_job['parameters']
         vol_name = attributes['volname']
         self.atom().start(vol_name)
         self.api_job['status'] = "finished"
