@@ -10,14 +10,18 @@ valid_objects:
 object_details:
   tendrl_context:
     enabled: True
-    value: /clusters/$cluster.id/tendrl_context
     attrs:
-      sds_nvr:
+      cluster_id:
         type: String
-        help: "gluster-3.8.3"
+        help: "Tendrl managed/generated cluster id for the sds being managed by Tendrl"
+      sds_name:
+        type: String
+        help: "gluster"
+      sds_version:
+        type: String
+        help: "3.2.1"
   volume:
     enabled: True
-    value: "/clusters/$cluster.id/volumes/$volume.id"
     attrs:
       volname:
         type: String
@@ -54,7 +58,6 @@ object_details:
         create:
           enabled: True
           uuid: "242f6190-9b37-11e6-950d-a24fc0d9649c"
-          flows: ["CreateVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.create.Create"
           type: "create"
           pre_run:
@@ -85,7 +88,6 @@ object_details:
         delete:
           enabled: True
           uuid: "538da518-9b38-11e6-9f33-a24fc0d9649c"
-          flows: ["DeleteVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.delete.Delete"
           type: "delete"
           pre_run:
@@ -106,7 +108,6 @@ object_details:
         start:
           enabled: True
           uuid: "873bf2a2-9b38-11e6-9f33-a24fc0d9649c"
-          flows: ["StartVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.start.Start"
           type: "action"
           pre_run:
@@ -127,7 +128,6 @@ object_details:
         stop:
           enabled: True
           uuid: "aa92dae0-9b38-11e6-9f33-a24fc0d9649c"
-          flows: ["StopVolume"]
           run: "tendrl.gluster_bridge.atoms.volume.stop.Stop"
           type: "action"
           pre_run:
@@ -148,7 +148,6 @@ object_details:
         set:
           enabled: True
           uuid: "d9388930-9b38-11e6-9f33-a24fc0d9649c"
-          flows: ["SetVolumeOptions"]
           run: "tendrl.gluster_bridge.atoms.volume.set.Set"
           type: "update"
           pre_run:
@@ -170,7 +169,6 @@ object_details:
         add_brick:
           enabled: True
           uuid: "42690bb4-9b39-11e6-9f33-a24fc0d9649c"
-          flows: ["AddBrick"]
           run: "tendrl.gluster_bridge.atoms.volume.add_brick.AddBrick"
           type: "action"
           pre_run: [
@@ -192,7 +190,6 @@ object_details:
         remove_brick_start:
           enabled: True
           uuid: "a07076ca-9b39-11e6-9f33-a24fc0d9649c"
-          flows: ["RemoveBrickStart"]
           run: "tendrl.gluster_bridge.atoms.volume.remove_brick_start.RemoveBrickStart"
           type: "action"
           pre_run:
@@ -214,7 +211,6 @@ object_details:
         remove_brick_stop:
           enabled: True
           uuid: "ee5433c8-9b42-11e6-9f33-a24fc0d9649c"
-          flows: ["RemoveBrickStop"]
           run: "tendrl.gluster_bridge.atoms.volume.remove_brick_stop.RemoveBrickStop"
           type: "action"
           pre_run:
@@ -236,7 +232,6 @@ object_details:
         remove_brick_commit:
           enabled: True
           uuid: "d7b02c70-9b39-11e6-9f33-a24fc0d9649c"
-          flows: ["RemoveBrickCommit"]
           run: "tendrl.gluster_bridge.atoms.volume.remove_brick_commit.RemoveBrickCommit"
           type: "action"
           pre_run:
@@ -258,7 +253,6 @@ object_details:
         replace_brick_commit:
           enabled: True
           uuid: "2e7a017a-9b3a-11e6-9f33-a24fc0d9649c"
-          flows: ["ReplaceBrickCommit"]
           run: "tendrl.gluster_bridge.atoms.volume.replace_brick_start.ReplaceBrickCommit"
           type: "action"
           pre_run:
@@ -281,7 +275,6 @@ object_details:
         rebalance_start:
           enabled: True
           uuid: "85c82b82-9b3a-11e6-9f33-a24fc0d9649c"
-          flows: ["RebalanceStart"]
           run: "tendrl.gluster_bridge.atoms.volume.rebalance_start.RebalanceStart"
           type: "action"
           pre_run:
@@ -304,7 +297,6 @@ object_details:
         rebalance_stop:
           enabled: True
           uuid: "b1646aa8-9b3a-11e6-9f33-a24fc0d9649c"
-          flows: ["RebalanceStop"]
           run: "tendrl.gluster_bridge.atoms.volume.rebalance_stop.RebalanceStop"
           type: "action"
           pre_run:
@@ -337,7 +329,6 @@ object_details:
         log_rotate:
           enabled: True
           uuid: "a468ecba-9b3b-11e6-9f33-a24fc0d9649c"
-          flows: ["LogRotate"]
           run: "tendrl.gluster_bridge.atoms.volume.log_rotate.LogRotate"
           type: "action"
           pre_run:
@@ -356,7 +347,6 @@ object_details:
           version: "0.1.0"
   brick:
     enabled: True
-    value: "/clusters/$cluster.id/volumes/$volume.id/bricks/$brick.id"
     attrs:
       brickdetails:
         type: String
@@ -367,7 +357,6 @@ object_details:
 
   peer:
     enabled: True
-    value: "/clusters/$cluster.id/peers/$peer.id"
     attrs:
       hostname:
         type: String
@@ -377,7 +366,6 @@ object_details:
       probe:
         enabled: True
         uuid: "84806420-9b43-11e6-9f33-a24fc0d9649c"
-        flows: ["PeerProbe"]
         run: "tendrl.gluster_bridge.atoms.peer.probe.Probe"
         type: "action"
         pre_run:
@@ -396,7 +384,6 @@ object_details:
       detach:
         enabled: True
         uuid: "ade307d2-9b43-11e6-9f33-a24fc0d9649c"
-        flows: ["PeerDetach"]
         run: "tendrl.gluster_bridge.atoms.peer.detach.Detach"
         type: "action"
         pre_run:
