@@ -1,7 +1,7 @@
 import json
 
 import etcd
-from tendrl.gluster_integration.atoms.volume.create import Create
+from tendrl.gluster_integration.objects.volume.atoms.create import Create
 
 
 class CreateVolume(object):
