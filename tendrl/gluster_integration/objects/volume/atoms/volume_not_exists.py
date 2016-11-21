@@ -1,20 +1,21 @@
 import logging
 
 from tendrl.common.atoms.base_atom import BaseAtom
+from tendrl.gluster_integration.objects.volume import volume
 
 LOG = logging.getLogger(__name__)
 
 
 class VolumeNotExists(BaseAtom):
     def run(self, parameters):
-        path = "/clusters/%s/Volumes/%s" %\
-            (
-                parameters.get("Tendrl_context.cluster_id"),
-                parameters.get("Volume.vol_id")
-            )
-        etcd_client = parameters['etcd_client']
-        volume = etcd_client.read(path)
-        if volume is None:
+        vol = volume.Volume(
+            "",
+            parameters.get("Volume.vol_id"),
+            parameters.get("Tendrl_context.cluster_id")
+        )
+        vol.refresh()
+
+        if vol.name == "":
             return True
         else:
             LOG.error(
