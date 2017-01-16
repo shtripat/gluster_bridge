@@ -4,10 +4,10 @@ import logging
 import re
 import signal
 import subprocess
-import sys
 import time
 
 from tendrl.commons.config import load_config
+from tendrl.commons.etcdobj import etcdobj
 from tendrl.commons.log import setup_logging
 from tendrl.commons.manager.manager import Manager
 from tendrl.commons.manager.manager import SyncStateThread
@@ -29,7 +29,7 @@ from tendrl.gluster_integration.persistence.tendrl_definitions import \
 
 config = load_config(
     "gluster-integration",
-    "/etc/tendrl/gluster-integration/gluster-integration.yaml"
+    "/etc/tendrl/gluster-integration/gluster-integration.conf.yaml"
 )
 
 LOG = logging.getLogger(__name__)
@@ -73,6 +73,11 @@ class GlusterIntegrationSyncStateThread(SyncStateThread):
 class GlusterIntegrationManager(Manager):
     def __init__(self, cluster_id):
         self._complete = gevent.event.Event()
+        etcd_kwargs = {
+            'port': config['etcd_port'],
+            'host': config["etcd_connection"]
+        }
+        self.etcd_orm = etcdobj.Server(etcd_kwargs=etcd_kwargs)
         super(
             GlusterIntegrationManager,
             self
@@ -81,7 +86,7 @@ class GlusterIntegrationManager(Manager):
             cluster_id,
             config,
             GlusterIntegrationSyncStateThread(self, cluster_id),
-            GlusterIntegrationEtcdPersister(),
+            GlusterIntegrationEtcdPersister(self.etcd_orm),
             "clusters/%s/definitions/data" % cluster_id
         )
         self.register_to_cluster(cluster_id)
@@ -282,16 +287,15 @@ class GlusterIntegrationManager(Manager):
 
 def main():
     setup_logging(
-        config['configuration']['log_cfg_path']
+        config['log_cfg_path']
     )
 
-    if sys.argv:
-        if len(sys.argv) > 1:
-            if "cluster-id" in sys.argv[1]:
-                cluster_id = sys.argv[2]
-                utils.set_tendrl_context(cluster_id)
+    cluster_id = utils.get_tendrl_context()
+    if not cluster_id:
+        LOG.error("Could not find cluster_id")
+        exit(1)
 
-    m = GlusterIntegrationManager(utils.get_tendrl_context())
+    m = GlusterIntegrationManager(cluster_id)
     m.start()
 
     complete = gevent.event.Event()
