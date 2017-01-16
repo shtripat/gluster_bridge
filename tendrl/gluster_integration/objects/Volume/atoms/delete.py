@@ -25,7 +25,7 @@ class Delete(BaseAtom):
                 '--mode=script'
             ]
         )
-        etcd_client = parameters['etcd_client']
+        etcd_client = parameters["etcd_server"].client
         vol_key = "clusters/%s/Volumes/%s/deleted" % (cluster_id, vol_id)
         etcd_client.write(vol_key, "True")
         return True
