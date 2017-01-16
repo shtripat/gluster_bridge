@@ -1,11 +1,24 @@
+from tendrl.commons.config import load_config
+from tendrl.commons.etcdobj.etcdobj import Server as etcd_server
 from tendrl.commons.persistence.etcd_persister import EtcdPersister
 from tendrl.gluster_integration.persistence.sync_objects import SyncObject
 
+config = load_config(
+    "gluster-integration",
+    "/etc/tendrl/gluster-integration/gluster-integration.yaml"
+)
+
 
 class GlusterIntegrationEtcdPersister(EtcdPersister):
-    def __init__(self, config):
-        super(GlusterIntegrationEtcdPersister, self).__init__(config)
-        self._store = self.get_store()
+    def __init__(self):
+        etcd_kwargs = {
+            'port': int(config["configuration"]["etcd_port"]),
+            'host': config["configuration"]["etcd_connection"]
+        }
+        self._store = etcd_server(etcd_kwargs=etcd_kwargs)
+        super(GlusterIntegrationEtcdPersister, self).__init__(
+            self._store.client
+        )
 
     def update_sync_object(self, updated, cluster_id, data):
         self._store.save(
@@ -24,6 +37,9 @@ class GlusterIntegrationEtcdPersister(EtcdPersister):
 
     def update_brick(self, brick):
         self._store.save(brick)
+
+    def update_volume_options(self, vol_options):
+        self._store.save(vol_options)
 
     def save_events(self, events):
         for event in events:

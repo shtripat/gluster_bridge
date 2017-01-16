@@ -1,8 +1,10 @@
 from mock import MagicMock
 import sys
+sys.modules['tendrl.commons.config'] = MagicMock()
 sys.modules[
     'tendrl.gluster_integration.persistence.sync_objects'] = MagicMock()
 from tendrl.gluster_integration.persistence import persister
+del sys.modules['tendrl.commons.config']
 del sys.modules[
     'tendrl.gluster_integration.persistence.sync_objects']
 from tendrl.gluster_integration.persistence import servers
@@ -11,7 +13,7 @@ from tendrl.gluster_integration.persistence import servers
 class Test_Persister(object):
     def setup_method(self, method):
         persister.etcd_server = MagicMock()
-        self.Persister = persister.GlusterIntegrationEtcdPersister(MagicMock())
+        self.Persister = persister.GlusterIntegrationEtcdPersister()
         self.Persister._store = MagicMock()
 
     def test_Persister_Creation(self):

@@ -4,9 +4,10 @@ import logging
 import re
 import signal
 import subprocess
+import sys
 import time
 
-from tendrl.commons.config import TendrlConfig
+from tendrl.commons.config import load_config
 from tendrl.commons.log import setup_logging
 from tendrl.commons.manager.manager import Manager
 from tendrl.commons.manager.manager import SyncStateThread
@@ -26,7 +27,10 @@ from tendrl.gluster_integration.persistence.tendrl_context import TendrlContext
 from tendrl.gluster_integration.persistence.tendrl_definitions import \
     TendrlDefinitions
 
-config = TendrlConfig("gluster-integration", "/etc/tendrl/tendrl.conf")
+config = load_config(
+    "gluster-integration",
+    "/etc/tendrl/gluster-integration/gluster-integration.yaml"
+)
 
 LOG = logging.getLogger(__name__)
 
@@ -75,10 +79,9 @@ class GlusterIntegrationManager(Manager):
         ).__init__(
             "sds",
             cluster_id,
-            None,
             config,
             GlusterIntegrationSyncStateThread(self, cluster_id),
-            GlusterIntegrationEtcdPersister(config),
+            GlusterIntegrationEtcdPersister(),
             "clusters/%s/definitions/data" % cluster_id
         )
         self.register_to_cluster(cluster_id)
@@ -250,7 +253,7 @@ class GlusterIntegrationManager(Manager):
                     if k.startswith('%s.options' % volname):
                         dict['.'.join(k.split(".")[2:])] = v
                         options.pop(k, None)
-                self.persister.update_volume_options(
+                self.persister_thread.update_volume_options(
                     VolumeOptions(
                         cluster_id=cluster_id,
                         vol_id=vol_id,
@@ -279,16 +282,16 @@ class GlusterIntegrationManager(Manager):
 
 def main():
     setup_logging(
-        config.get('gluster-integration', 'log_cfg_path'),
-        config.get('gluster-integration', 'log_level')
+        config['configuration']['log_cfg_path']
     )
 
-    cluster_id = utils.get_tendrl_context()
-    if not cluster_id:
-        LOG.error("Could not find cluster_id")
-        exit(1)
+    if sys.argv:
+        if len(sys.argv) > 1:
+            if "cluster-id" in sys.argv[1]:
+                cluster_id = sys.argv[2]
+                utils.set_tendrl_context(cluster_id)
 
-    m = GlusterIntegrationManager(cluster_id)
+    m = GlusterIntegrationManager(utils.get_tendrl_context())
     m.start()
 
     complete = gevent.event.Event()
