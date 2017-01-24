@@ -36,7 +36,7 @@ class Definition(objects.BaseObject):
 
         for flow_name, flow in raw_obj.get('flows', {}).iteritems():
             flow_mod = flow['run'].split(".flows.")[-1].split(".")[0]
-            flow_cls_mod = flow['run'].split(".flows.")[-1].split(".")[0]
+            flow_cls_name = flow['run'].split(".flows.")[-1].split(".")[0]
             flow_fqdn = "%s.objects.%s.flows.%s" % (namespace,
                                                     obj_name.lower(),
                                                     flow_mod)
