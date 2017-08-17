@@ -5,17 +5,18 @@ import os
 import re
 import socket
 import subprocess
+import uuid
 
 from tendrl.commons.event import Event
 from tendrl.commons.message import ExceptionMessage
 from tendrl.commons.message import Message
+from tendrl.commons.objects.job import Job
 from tendrl.commons import sds_sync
 from tendrl.commons.utils import cmd_utils
 from tendrl.commons.utils import etcd_utils
 from tendrl.commons.utils.time_utils import now as tendrl_now
 from tendrl.gluster_integration import ini2json
 from tendrl.gluster_integration.sds_sync import brick_utilization
-from tendrl.gluster_integration.sds_sync import rebalance_status as rebal_stat
 
 
 class GlusterIntegrationSdsSyncStateThread(sds_sync.SdsSyncThread):
@@ -197,20 +198,6 @@ class GlusterIntegrationSdsSyncStateThread(sds_sync.SdsSyncThread):
                                 except etcd.EtcdKeyNotFound:
                                     pass
 
-                            rebalance_status = ""
-                            if volumes[
-                                    'volume%s.type' % index
-                            ].startswith("Distribute"):
-                                status = rebal_stat.get_rebalance_status(
-                                    volumes[
-                                        'volume%s.name' % index
-                                    ]
-                                )
-                                if status:
-                                    rebalance_status = status.replace(" ", "_")
-                                else:
-                                    rebalance_status = "not_started"
-
                             volume = NS.gluster.objects.Volume(
                                 vol_id=volumes[
                                     'volume%s.id' % index
@@ -260,7 +247,6 @@ class GlusterIntegrationSdsSyncStateThread(sds_sync.SdsSyncThread):
                                 snapd_inited=volumes[
                                     'volume%s.snapd_svc.inited' % index
                                 ],
-                                rebal_status=rebalance_status,
                             )
                             volume.save(ttl=SYNC_TTL)
                             rebal_det = NS.gluster.objects.RebalanceDetails(
@@ -639,6 +625,51 @@ class GlusterIntegrationSdsSyncStateThread(sds_sync.SdsSyncThread):
                         used_capacity=0,
                         pcnt_used=0
                     ).save()
+
+                # Invoke the aggregated sync flow
+                if "provisioner/gluster" in NS.node_context.tags:
+                    params = {}
+                    params['TendrlContext.integration_id'] = \
+                        NS.tendrl_context.integration_id
+                    payload = {
+                        "tags": ["provisioner/gluster"],
+                        "run": "gluster.flows.SyncAggregatedClusterDetails",
+                        "status": "new",
+                        "parameters": params,
+                        "type": "sds"
+                    }
+                    _job_id = str(uuid.uuid4())
+                    Job(
+                        job_id=_job_id,
+                        status="new",
+                        payload=payload
+                    ).save()
+                    Event(
+                        Message(
+                            priority="info",
+                            publisher=NS.publisher_id,
+                            payload={
+                                "message": "Started job %s for aggregated sync"
+                                           "of cluster %s" %
+                                (_job_id, NS.tendrl_context.integration_id)
+                            }
+                        )
+                    )
+                    while True:
+                        gevent.sleep(3)
+                        job_status = NS._int.client.read(
+                            "/queue/%s/status" % _job_id
+                        ).value
+                        if job_status in ["finished", "failed"]:
+                            msg = "Job %s %s" % (_job_id, job_status)
+                            Event(
+                                Message(
+                                    priority="error",
+                                    publisher=NS.publisher_id,
+                                    payload={"message": msg}
+                                )
+                            )
+                            break
 
                 _cluster = NS.tendrl.objects.Cluster(
                     integration_id=NS.tendrl_context.integration_id

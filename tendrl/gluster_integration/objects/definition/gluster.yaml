@@ -60,6 +60,17 @@ namespace.gluster:
       type: Create
       uuid: b8dd2b4a-96de-4ded-b17d-374d26ec7593
       version: 1
+    SyncAggregatedClusterDetails:
+      tags:
+        - "provisioner/gluster"
+      atoms:
+        - gluster.objects.Volume.atoms.SyncRebalanceStatus
+      help: sync the rebalance status for all the volumes
+      enabled: true
+      run: gluster.flows.SyncAggregatedClusterDetails
+      type: Get
+      uuid: b8dd2b4a-96de-4ded-b17d-374d26ec7599
+      version: 1
   objects:
     GlobalDetails:
       attrs:
@@ -504,6 +515,13 @@ namespace.gluster:
           run: gluster.objects.Volume.atoms.CheckVolumeAvailable
           type: Start
           uuid: 242f6190-9b37-11e6-950d-a24fc0d96765
+        SyncRebalanceStatus:
+          enabled: true
+          help: sync the rebalance status for volumes
+          name: sync rebalance status
+          run: gluster.objects.Volume.atoms.SyncRebalanceStatus
+          type: Get
+          uuid: 242f6190-9b37-11e6-950d-a24fc0d96756
       flows:
         DeleteVolume:
           tags:
