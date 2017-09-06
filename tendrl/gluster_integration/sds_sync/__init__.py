@@ -158,7 +158,8 @@ class GlusterIntegrationSdsSyncStateThread(sds_sync.SdsSyncThread):
                                     state=peers['peer%s.state' % index]
                                 )
                             if not peer.exists():
-                                job_id = monitoring_utils.update_dashboard(
+                                job_id = 
+                                .update_dashboard(
                                     peer.hostname,
                                     RESOURCE_TYPE_PEER,
                                     NS.tendrl_context.integration_id,
@@ -552,7 +553,7 @@ def sync_volumes(volumes, index, vol_options):
             )
             if not brick.exists():
                 job_id = monitoring_utils.update_dashboard(
-                    brick.brick_name,
+                    brick.name,
                     RESOURCE_TYPE_BRICK,
                     NS.tendrl_context.integration_id,
                     "add"
