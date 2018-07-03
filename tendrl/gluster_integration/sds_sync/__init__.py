@@ -292,7 +292,7 @@ class GlusterIntegrationSdsSyncStateThread(sds_sync.SdsSyncThread):
                                     volume.value,
                                     SYNC_TTL + VOLUME_TTL
                                 )
-                                volumes.append(volume)
+                            volumes.append(volume)
                     cluster_status.sync_cluster_status(
                         volumes, SYNC_TTL + VOLUME_TTL
                     )
